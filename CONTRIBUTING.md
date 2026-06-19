@@ -37,3 +37,7 @@ No tier label without the evidence to back it. A blocked read is never reported 
 ## The insight series grows by PR
 
 The methodology is a numbered insight series. Each survey extracts a numbered insight; the surveys produce data, the insights produce the methodology. New insights land as PRs against that series. Claim the next free number, write the entry from the template, cite the survey that produced it, and keep it sanitized to class level like everything else.
+
+## Code of conduct
+
+Participation is governed by our [Code of Conduct](CODE_OF_CONDUCT.md). Be the kind of collaborator you would want to review your work.

@@ -100,23 +100,23 @@ ASSESSMENT CHAIN - <category> (slug). Run ALL. Null result = logged result, neve
                             class and earns a signature. Not optional.
 [ ] 1d. FP-GATE             False-positive gate. Observe by default. Hold candidates that
                             tripped an FP signature out of the finding set until re-verified.
-[ ] 2.  ATTRIBUTE           Turn a bare IP into a named operator. no-SNI TLS probe -> default
-                            cert -> CT-log SAN pivot, plus rDNS / passive DNS. Operators are
-                            mono-platform at population scale. Resolve apparent cross-platform
-                            overlap to PTR before believing it.
-[ ] 3.  CLASSIFY            Classify the target (HIPAA / clinical / personal / commercial /
-                            research / honeypot), surface ethics flags. WHOIS is authoritative
-                            for routing, never a filename slug. Score impossible service
-                            combinations on one host as a honeypot tell.
-                            Tool: aimap-profile (classification + ethics flags).
-[ ] 3v. VERIFY             THE LOAD-BEARING STAGE. Re-probe every candidate. 200-with-data
+[ ] 2.  VERIFY              THE LOAD-BEARING STAGE. Re-probe every candidate. 200-with-data
                             earns the label. A 200 is platform identity, not auth state. Dork
                             hits are not instances (the ~50% marker rule). Follow redirects,
                             check auth-state-only tokens, traverse the full handshake, pull one
                             full real record to verify data class, run protocol-strict probes to
                             self-filter honeypots. Refute the framing. See
                             ../docs/VERIFICATION.md.
-[ ] 4.  WEB-SECRET-SCAN     SPA / JS-bundle secret extraction per web UI. Read-only.
+[ ] 3.  ATTRIBUTE           Turn a bare IP into a named operator. no-SNI TLS probe -> default
+                            cert -> CT-log SAN pivot, plus rDNS / passive DNS. Operators are
+                            mono-platform at population scale. Resolve apparent cross-platform
+                            overlap to PTR before believing it.
+[ ] 4.  CLASSIFY            Classify the target (HIPAA / clinical / personal / commercial /
+                            research / honeypot), surface ethics flags. WHOIS is authoritative
+                            for routing, never a filename slug. Score impossible service
+                            combinations on one host as a honeypot tell.
+                            Tool: aimap-profile (classification + ethics flags).
+[ ] 5.  WEB-SECRET-SCAN     SPA / JS-bundle secret extraction per web UI. Read-only.
 [ ] 6.  LEDGER             Append-only, lifecycle-tracked ingest of every confirmed finding
                             (open -> disclosed -> acknowledged -> remediated -> verified, plus
                             archived). A status update appends a timestamped note, never
@@ -365,7 +365,7 @@ moves: [../docs/DISCOVERY-MOVES.md](../docs/DISCOVERY-MOVES.md).
 | [SCORING.md](../docs/SCORING.md) | The policy-as-methodology scoring stage and the framework mappings. |
 | [OUTPUT-STANDARD.md](../docs/OUTPUT-STANDARD.md) | What a finished survey produces. |
 | [INSIGHTS.md](../docs/INSIGHTS.md) | The codified Insights, the compounding asset. |
-| [OPERATOR-POSTURE.md](../docs/OPERATOR-POSTURE.md) | Operator-attribution discipline. |
+| [OPERATOR-POSTURE.md](../docs/OPERATOR-POSTURE.md) | The composite operator mindset. The four stances and the stage each one carries. |
 
 ---
 

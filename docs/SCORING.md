@@ -238,6 +238,9 @@ exfiltrate, applies to scoring too.
                                            that can escalate      a defended number
 ```
 
+The diagram shows the numbered stages only; the Active-Banner prefilter runs
+between Discover and Fingerprint (see [METHODOLOGY.md](METHODOLOGY.md)).
+
 Scoring is downstream of Verify for a reason: a score computed from candidates is
 a confident, reproducible, wrong number. It is downstream of Classify because the
 government-sector escalation needs an authoritative sector, not a guess. By the

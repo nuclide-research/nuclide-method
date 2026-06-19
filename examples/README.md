@@ -14,6 +14,10 @@ One is a database read held at metadata. One is a model-server class anchored to
 a published CVE. Different target classes, different verification tiers, one
 discipline running through all four.
 
+Start with [00-sample-run.txt](00-sample-run.txt) for the shape of a full chain
+run over a documentation-only scope. The four worked surveys below each go deep
+on one corner of that run.
+
 | File | Target class | Discipline lane taught | Verification tier |
 |---|---|---|---|
 | [01-zep-ce-empty-apisecret.md](01-zep-ce-empty-apisecret.md) | Commercial | Code-only, read the source not the target | inner-A / outer-0 |

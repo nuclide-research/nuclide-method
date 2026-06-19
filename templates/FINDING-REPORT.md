@@ -3,7 +3,7 @@ platform: "<service / software name, e.g. vector-db, model-server, mlflow>"
 verification:
   inner: A   # A = logic / source reading. B = released artifact exercised in a realistic stack.
   outer: 0   # 0 = no live host. 1 = one in-scope host. 2 = population (fingerprint + sampling + dedup).
-tier: Hypothesized   # Verified / Inferred / Hypothesized
+tier: candidate   # Verified / Surface-open / Candidate  (access state; see CONTRIBUTING.md)
 status: open   # open / confirmed / remediated / withdrawn
 severity: ""   # CRITICAL / HIGH / MEDIUM / LOW, only after hard proof at the stated rung
 ---

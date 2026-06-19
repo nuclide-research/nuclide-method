@@ -21,11 +21,12 @@ em=$(printf '\xe2\x80\x94')
 hits=$(git ls-files | xargs grep -Il "$em" 2>/dev/null || true)
 if [ -n "$hits" ]; then emit "FAIL  em-dash (U+2014) in:"; emit "$hits"; fail=1; else emit "PASS  no em dashes"; fi
 
-# 4. Only RFC 5737 documentation IPs, loopback, or the bind-all sentinel in tracked text.
+# 4. Only RFC 5737 documentation IPs, loopback, RFC 1918 private, or the bind-all
+#    sentinel in tracked text. Allow-set kept identical to the CI workflow's.
 bad=$(git ls-files -- '*.md' '*.sh' '*.txt' '*.cff' '*.example' '*.yml' \
   | xargs grep -IohE '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b' 2>/dev/null \
-  | grep -vE '^(192\.0\.2\.|198\.51\.100\.|203\.0\.113\.|0\.0\.0\.0|127\.0\.0\.1)' | sort -u || true)
-if [ -n "$bad" ]; then emit "FAIL  non-documentation IPv4 present:"; emit "$bad"; fail=1; else emit "PASS  only RFC 5737 / loopback IPs in prose"; fi
+  | grep -vE '^(192\.0\.2\.|198\.51\.100\.|203\.0\.113\.|0\.0\.0\.0|127\.|10\.|192\.168\.|172\.1[6-9]\.|172\.2[0-9]\.|172\.3[0-1]\.|255\.255\.)' | sort -u || true)
+if [ -n "$bad" ]; then emit "FAIL  non-documentation IPv4 present:"; emit "$bad"; fail=1; else emit "PASS  only RFC 5737 / loopback / RFC 1918 IPs in prose"; fi
 
 # 5. No researcher PII. Override the pattern with PII_PATTERN if you fork the firm voice.
 PII_PATTERN=${PII_PATTERN:-'@gmail|staff sergeant|enlisted'}

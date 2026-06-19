@@ -64,6 +64,9 @@ Discover -> Fingerprint -> VERIFY -> Attribute -> Classify -> Ledger -> Score ->
                             load-bearing
 ```
 
+These are the numbered stages. The Active-Banner prefilter sits between Discover
+and Fingerprint; the full form is in [METHODOLOGY.md](METHODOLOGY.md).
+
 Discover finds the population. Fingerprint identifies the platform. Verify turns candidates into findings or refutes them. Attribute ties exposures to operators where the public record allows. Classify sorts by category and severity. Ledger records every observation, including the nulls. Score rates the cohort. Codify extracts the numbered insight that feeds the next survey.
 
 The output of a survey is two things: a rate for the platform, and an insight for the method. The rates build the evidence base. The insights build the method that produces the next rate. The program is the loop between them.

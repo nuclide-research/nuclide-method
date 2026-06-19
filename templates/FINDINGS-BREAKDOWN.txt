@@ -42,7 +42,7 @@ FINDING [N]: [SHORT TITLE]
 Severity: CRITICAL / HIGH / MEDIUM / LOW
 Verified: YES / NO / PARTIAL
 Verification rung: inner A or B, outer 0 / 1 / 2
-Tier: Verified / Inferred / Hypothesized
+Tier: Verified / Surface open, access not exercised / Candidate
 
 WHAT HAPPENED
 [One paragraph. What did we find? What endpoint, what service, what data?]

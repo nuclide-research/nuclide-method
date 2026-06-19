@@ -177,9 +177,9 @@ the risk and knows exactly what to fix.
 A finding is not a CVE dump. It is a narrative: reconnaissance, then discovery,
 then the verification that earned the claim, then the impact in terms the owner
 cares about, then the fix that closes it. The verification step is load-bearing
-in the telling, not decoration. The reader has to see that the 25 percent figure
-is 25 percent of confirmed real instances, really unauthenticated, against a
-comparison platform really at zero.
+in the telling, not decoration. The reader has to see that a published rate is a
+rate of confirmed real instances, really unauthenticated, against a comparison
+platform really at zero.
 
 Absence of a finding is not absence of risk, and a negative result is still a
 result worth publishing. A platform that ships auth on by default and lands near

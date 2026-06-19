@@ -31,9 +31,9 @@ Auth-on-default at the database layer. Cassandra-derived systems, ScyllaDB
 included, ship with `AllowAllAuthenticator` as the default. An operator who
 deploys to bare cloud compute with no network firewall gets an internet-reachable
 cluster with full unauthenticated read and write. The version banner read off the
-REST API showed a release several years past end-of-life, which says the cluster
-had not been touched in a long time. No one was minding the gate, because the gate
-was never closed.
+REST API showed an end-of-life release, which says the cluster had not been
+touched in a long time. No one was minding the gate, because the gate was never
+closed.
 
 ---
 
@@ -71,32 +71,26 @@ API answers an unauthenticated `GET` for the keyspace list and the per-keyspace
 table list. That call returns metadata: which keyspaces exist, which tables sit
 under each. It returns no rows.
 
-The enumeration came back with a clear shape: roughly two dozen non-system
-keyspaces and a few hundred tables across them. The naming pattern, read at the
-level of data classes, settles what this cluster holds before a single record is
-touched. Stated as classes rather than verbatim names:
+The enumeration came back with a clear shape: multiple non-system keyspaces and
+many application tables across them. The naming pattern, read at the level of data
+classes, settles what this cluster holds before a single record is touched. Stated
+as classes rather than verbatim names:
 
 | Data domain | Class of table present | What the class already proves |
 |---|---|---|
-| Payments | A stored-card-data table, plus a lookup-indexed variant of it | Stored card data, reachable and indexed for fast lookup |
-| Auth / key material | Encrypt and decrypt key-material tables, plus a resource-permission model | Key material and an access-control model |
-| One-time-pass | An OTP / one-time-pass message table and its config | Mobile OTP as a primary auth factor |
-| Users / identity | Identity records, group membership, live session tokens, OTP codes | Identity, group membership, and active session tokens |
-| Companies / KYC | Multi-tenant business records and a KYC-document table with records mid-review | Multi-tenant business data and KYC documents under review |
-| Employees | Workforce records and an activation table | Workforce records |
-| Wallets | A mobile-wallet ledger with balance and transaction tables | A mobile-wallet ledger |
-| Orders / dispatch | Order-lifecycle and dispatch tables | An on-demand delivery and dispatch product |
-| Second product | An unrelated product domain | A second, unrelated product shared the same cluster |
+| Payments | A stored-card-data table | Cardholder data is reachable |
+| Auth / identity | Key-material tables, live session tokens, and a one-time-pass table | Encryption keys, active sessions, and an OTP auth factor are reachable |
+| Regulated records | A multi-tenant business keyspace, including KYC identity documents | Regulated KYC data is reachable |
 
-A benchmark artifact table (the cassandra-stress load-test default) sat in the
-list too, which says a human ops team had load-tested this cluster at some point.
-Someone built it on purpose. They just never closed the gate.
+These are data classes, not the cluster's verbatim table list. The full inventory
+of one host is itself a re-identifying fingerprint, so it is not reproduced here.
+The point survives the abstraction: the cluster was built deliberately and then
+left open. Someone stood it up on purpose. They just never closed the gate.
 
-Read the schema on its own terms. The stored-card-data table is cardholder data,
-indexed for fast lookup. The session-token table is live session tokens. The
-KYC-document table holds paperwork mid-review. None of that required reading a
-row. The class of each table carried it. That is the lesson in one example: the
-schema is the finding.
+Read the schema on its own terms. The stored-card-data table is cardholder data.
+The session-token table is live session tokens. The KYC table is regulated
+identity documents. None of that required reading a row. The class of each table
+carried it. That is the lesson in one example: the schema is the finding.
 
 **Tier: schema enumeration confirmed. Data not read.**
 

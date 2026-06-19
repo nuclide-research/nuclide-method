@@ -33,7 +33,7 @@ Discover -> Active-Banner -> Fingerprint -> [ VERIFY ] -> Attribute -> Classify 
 | [tiptoe](https://github.com/nuclide-research/tiptoe) `go install github.com/nuclide-research/tiptoe@latest` | Active-Banner | single monitored host | paced banner with block detection |
 | [aimap](https://github.com/nuclide-research/aimap) `go install github.com/nuclide-research/aimap@latest` | Fingerprint | IP and port | service fingerprint plus deep-enum read |
 | [VisorBishop](https://github.com/nuclide-research/VisorBishop) `go install github.com/nuclide-research/VisorBishop/cmd/visorbishop@latest` | Fingerprint | IP and port | observability-tier platform plus 5-value auth state |
-| [herald](https://github.com/nuclide-research/herald) `go install github.com/nuclide-research/herald@latest` | Verify | `IP:PORT:SCHEME` list | NDJSON auth-state findings from declarative probes |
+| [herald](https://github.com/nuclide-research/herald) `go install github.com/nuclide-research/herald@latest` | Verify | `IP:PORT[:SCHEME]` on stdin, `-platform <name>` | NDJSON auth-state findings from declarative probes |
 | [winnow](https://github.com/nuclide-research/winnow) `git clone && python` [^3] | Verify | aimap or menlohunt candidates | PASS, REFUTED, or DOWNGRADE per candidate |
 | [VisorGraph](https://github.com/nuclide-research/VisorGraph) `go install github.com/nuclide-research/VisorGraph/cmd/visorgraph@latest` | Attribute | IP or cert fingerprint | cert-pivot provenance graph to named operator |
 | [recongraph](https://github.com/nuclide-research/recongraph) `git clone && python` [^3] | Attribute | IP, CIDR, domain, ASN, cert, banner | typed provenance graph with exposure classification |
@@ -56,7 +56,8 @@ and produced a binary. The footnoted entries resolve as modules but do not
 [^1]: `tome` published tag `v0.1.0` declares its module path under a stale owner
   segment that no longer matches the repo, so `go install
   github.com/nuclide-research/tome@latest` fails with a version-constraints
-  conflict. Build from source: `git clone
+  conflict and prints that legacy path in the error. Ignore the printed path and
+  build from source: `git clone
   https://github.com/nuclide-research/tome && cd tome && go build -o tome .`
 [^2]: `scanner` declares a bare module path (`module shodan-clone`), so the
   `go install` path does not resolve. Build from source: `git clone

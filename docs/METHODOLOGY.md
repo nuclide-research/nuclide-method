@@ -10,9 +10,9 @@ this method are verification-stage failures or the rules that prevent them. That
 ratio is the method. Everything below exists to turn a candidate into a finding
 you can stand behind.
 
-This document is the spine. It walks the eight stages in order, says what each
-stage does and why it carries weight, and points to the deeper docs where a
-stage earns its own page.
+This document is the spine. It walks the eight numbered stages plus the
+active-banner prefilter in order, says what each stage does and why it carries
+weight, and points to the deeper docs where a stage earns its own page.
 
 ---
 

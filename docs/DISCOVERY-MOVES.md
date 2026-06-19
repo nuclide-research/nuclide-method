@@ -32,11 +32,12 @@ The CT-fed engine misses nothing that ever got a cert but cannot see un-TLS'd
 services. The delta is the population neither engine alone reports, and it is
 often where the interesting exposure lives.
 
-**Illustration.** A curated scan saw 3 services on an edge host at
-192.0.2.40. The full-port engine saw 18 on the same host, including a cluster
-console on a five-digit port, a gateway admin on a non-standard port, and
-several SSH daemons on DNAT'd five-digit ports. The curated negative was not a
-host negative. Reading the second engine turned one host into a topology.
+**Illustration.** A curated scan saw a handful of services on an edge host at
+192.0.2.40. The full-port engine saw several times that many on the same host,
+including a cluster console on a five-digit port, a gateway admin on a
+non-standard port, and several SSH daemons on DNAT'd five-digit ports. The
+curated negative was not a host negative. Reading the second engine turned one
+host into a topology.
 
 ---
 
@@ -59,8 +60,8 @@ entirely and matches the thing the service actually does on the wire.
 
 **Illustration.** A platform's brand dorks all returned roughly zero. A
 port-first sweep on the platform-class port, filtered by the server banner the
-framework ships, surfaced a 6,403-host superset. The fingerprint stage
-classified that down to a small set of genuine instances, all critically
+framework ships, surfaced a several-thousand-host superset. The fingerprint
+stage classified that down to a small set of genuine instances, all critically
 unauthenticated, that no brand dork would ever have found.
 
 ---
@@ -133,10 +134,10 @@ One caveat: a banner is not a schema. It confirms the service is alive and which
 version, but it cannot confirm vector use or data exposure. That stays the deep
 enumerator's job.
 
-**Illustration.** A harvest of 1,000 candidate addresses dropped to roughly 290
-live on the active banner pass. The other 710 were stale cache. Fingerprinting
-the full 1,000 would have reported a population more than three times the real
-one, off by the exact stale fraction, confidently and reproducibly wrong.
+**Illustration.** A harvest of candidate addresses dropped to roughly a quarter
+live on the active banner pass. The rest were stale cache. Fingerprinting the
+full raw list would have reported a population several times the real one, off by
+the exact stale fraction, confidently and reproducibly wrong.
 
 ---
 
@@ -158,12 +159,13 @@ separates the real population from the look-alikes, and sampling instead of
 probing the full corpus reintroduces exactly the error you were trying to
 remove.
 
-**Illustration.** A title dork for one API platform returned 5,391 hosts. The
-mandatory marker probe confirmed 2,710 genuine instances, 50.3 percent. The raw
-count was off by a factor of two. A separate prober once marked 42 hosts "high
-unauth" off a bare 200, when the body it got back was the platform's documented
-anonymous response and all 42 were correctly operating tenants. The data-layer
-probe, not the status code, is what earns the label.
+**Illustration.** A title dork for one API platform returned several thousand
+hosts. The mandatory marker probe confirmed only about half as genuine instances,
+so the raw count was off by roughly a factor of two. A separate prober once
+marked dozens of hosts "high unauth" off a bare 200, when the body it got back
+was the platform's documented anonymous response and every one was a correctly
+operating tenant. The data-layer probe, not the status code, is what earns the
+label.
 
 ---
 

@@ -41,8 +41,9 @@ When a payload read is genuinely required to confirm severity, it is bounded:
   one minimal, verified read.
 
 The discipline is the floor, not the ceiling. Sample the least that confirms the
-claim, then stop. A reference LLM-gateway survey across 1,857 hosts cost roughly
-a penny of operator quota in total, because every probe was bounded by design.
+claim, then stop. A reference LLM-gateway survey across a large host population
+cost on the order of a penny of operator quota in total, because every probe was
+bounded by design.
 
 ---
 
@@ -158,9 +159,14 @@ on any violation. It checks, on every push and pull request:
   name, personal email, or service history.
 - No disclosure-routing files.
 
-A green run means exactly one thing: no raw target data, no PII, no em dashes,
-only documentation IPs, no disclosure routing. The restraint ethic, machine-
-checked, on every commit.
+A green run means exactly one thing, and only that: no raw target data, no PII,
+no em dashes, only documentation IPs, no disclosure routing. These are the
+structural checks a regex can make. It does not, and cannot, catch a
+re-identification fingerprint built from co-located product details, or a hard
+survey count that should have been a qualitative range. Those are semantic, and
+they are caught by human review, not by the gate. A green build is the floor, not
+a clean bill. The restraint ethic, machine-checked where a machine can check it,
+on every commit.
 
 ```
   the ethic (this file)

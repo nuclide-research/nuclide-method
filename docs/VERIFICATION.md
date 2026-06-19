@@ -31,9 +31,9 @@ documented anonymous response is a 200. Not some of them. All of them. The
 "unauth rate" for that platform converges to 100 percent and stays there across
 re-runs. The number is stable, defensible-looking, and false for every host.
 
-That is why eighteen of the program's twenty-one-plus codified insights are
-verification-stage failures. The ratio is not an accident. It is the shape of
-the problem. Discovery has a few ways to go wrong. Verification has many, and
+That is why most of the program's codified insights are verification-stage
+failures, not discovery-stage ones. The ratio is not an accident. It is the shape
+of the problem. Discovery has a few ways to go wrong. Verification has many, and
 each one fails a whole subpopulation at once.
 
 ---
@@ -63,12 +63,12 @@ fails for every platform where the resolver enforces the gate and returns 200
 with a documented empty shape. Most modern GraphQL servers work this way.
 
 The case that named the rule: a Weights and Biases prober probed `/graphql`
-with a `viewer` query, saw HTTP 200 on 42 confirmed self-hosts, and labeled all
-42 "HIGH unauthenticated, anonymous mode enabled by default." Thirty minutes of
-follow-up dropped every one of them to Info. The response body was
+with a `viewer` query, saw HTTP 200 on several dozen confirmed self-hosts, and
+labeled every one "HIGH unauthenticated, anonymous mode enabled by default."
+Thirty minutes of follow-up dropped all of them to Info. The response body was
 `{"data":{"viewer":null}}`, which is W&B's documented "you are not
 authenticated" answer. The auth gate lives at the resolver, not the status
-line. All 42 were real production tenants operating exactly as designed.
+line. Every one was a real production tenant operating exactly as designed.
 
 ```
   unauth probe -> /graphql { viewer { id } }
@@ -136,16 +136,16 @@ roughly half false positives: re-skinned forks, reverse proxies passing the
 title through, OpenAI-compatible servers that share an API shape, coincidental
 string matches.
 
-The anchor: a full sweep of `http.title:"LiteLLM API"` returned 5,391 hosts.
-Marker probes confirmed 2,710 real LiteLLM, 50.3 percent. The other 49.7
-percent matched the dork and failed every platform-specific marker. Any
-population number read straight off the raw dork count is off by roughly two
+The anchor: a full sweep on a single-token API-platform title dork returned
+several thousand hosts. Marker probes confirmed only about half as genuine
+instances. The rest matched the dork and failed every platform-specific marker.
+Any population number read straight off the raw dork count is off by roughly two
 times.
 
 ```
-  5,391 dork hits  ->  marker probe  ->  2,710 confirmed (50.3%)
-                                          2,681 not LiteLLM (forks, proxies,
-                                                 OpenAI-shape lookalikes)
+  raw dork hits  ->  marker probe  ->  ~half confirmed
+                                       ~half not the platform (forks, proxies,
+                                              OpenAI-shape lookalikes)
 ```
 
 The sample-bias trap is what makes this survive review. Researchers sample the
@@ -162,9 +162,10 @@ The rule:
 - Quote both numbers. Raw dork hits and confirmed instances. The delta is the
   methodology disclosure, not a footnote.
 
-"5,408 exposed LiteLLM" is the wrong sentence. "5,391 dork hits, 2,710
-confirmed, 283 critical unauthenticated" is the right one. The first overstates
-the actionable population by an order of magnitude. The second is the finding.
+"N exposed instances" read off the raw hit count is the wrong sentence. "X dork
+hits, Y confirmed, Z critical unauthenticated," with X, Y, and Z each from a
+verified probe, is the right one. The first overstates the actionable population.
+The second is the finding.
 
 The 50 percent figure is a heuristic anchor, not a constant. Specific platforms
 run higher or lower depending on marker specificity. Assume at least 25 percent
@@ -251,16 +252,16 @@ to almost anything that looks like a request, because their job is to look open.
 A protocol-strict probe, an exact handshake envelope that a real implementation
 would accept and a faked one would mishandle, filters them out for free.
 
-The numbers: an exact JSON-RPC `initialize` envelope dropped one hosted honeypot
-fleet's pollution from 91.6 percent of a permissive survey to 1.1 percent of the
-strict one. The honeypots did not change. The probe did. Protocol-shape
-conformance is the primary discriminator. IP blocklists are a secondary net for
-the fleets a strict probe still lets through.
+The pattern: an exact JSON-RPC `initialize` envelope dropped one hosted honeypot
+fleet's pollution from the overwhelming majority of a permissive survey to a
+near-negligible share of the strict one. The honeypots did not change. The probe
+did. Protocol-shape conformance is the primary discriminator. IP blocklists are a
+secondary net for the fleets a strict probe still lets through.
 
-The lesson runs the other way too. If a survey's "finding" rate is
-suspiciously high, suspect the probe before you celebrate the yield. A 91
-percent hit rate is more likely a honeypot fleet answering a sloppy probe than a
-genuine epidemic of exposure.
+The lesson runs the other way too. If a survey's "finding" rate is suspiciously
+high, suspect the probe before you celebrate the yield. A suspiciously high hit
+rate is more likely a honeypot fleet answering a sloppy probe than a genuine
+epidemic of exposure.
 
 ---
 
@@ -366,7 +367,8 @@ host by host, marker by marker, is the whole program.
 
 ## See also
 
-- `docs/PIPELINE.md` for the eight-stage spine this stage sits inside
+- [METHODOLOGY.md](METHODOLOGY.md) for the eight-stage spine this stage sits
+  inside (diagram at [diagrams/pipeline.txt](diagrams/pipeline.txt))
 - The numbered insights in the methodology corpus, each sourced to the case
   study that taught the lesson, are the canonical reference vocabulary. Verify
   every tier label against them, cite them by number.

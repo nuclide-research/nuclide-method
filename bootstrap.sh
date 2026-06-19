@@ -48,8 +48,12 @@ github.com/nuclide-research/visor/cmd/visor@latest \
 github.com/nuclide-research/VisorBishop/cmd/visorbishop@latest \
 github.com/nuclide-research/VisorGraph/cmd/visorgraph@latest \
 github.com/nuclide-research/VisorCorpus/cmd/visorcorpus@latest \
-github.com/nuclide-research/VisorRAG/cmd/visor@latest \
 }"
+
+# VisorRAG also builds a binary named 'visor', which would clobber the umbrella
+# 'visor' tool in TOOLS above. It is installed separately, below, as 'visorrag'
+# so both tools coexist.
+VISORRAG="github.com/nuclide-research/VisorRAG/cmd/visor@latest"
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -138,6 +142,20 @@ if [ "$failed" -gt 0 ]; then
 	warn "Skipped tools (re-run later, or check the import path in docs/ARSENAL.md):"
 	for t in $failed_list; do warn "  $t"; done
 fi
+
+# Install VisorRAG as 'visorrag'. Its binary is named 'visor' and would
+# otherwise overwrite the umbrella visor tool. Build into a temp GOBIN, then
+# move it into place under the distinct name.
+say ""
+say "==> go install VisorRAG (as visorrag, to avoid clobbering the umbrella visor)"
+RAG_TMP=$(mktemp -d)
+if GOBIN="$RAG_TMP" go install "$VISORRAG" >/dev/null 2>&1 && [ -f "$RAG_TMP/visor" ]; then
+	mv "$RAG_TMP/visor" "$GOBIN/visorrag"
+	ok "VisorRAG installed as visorrag"
+else
+	warn "VisorRAG did not install. Re-run later, or check docs/ARSENAL.md."
+fi
+rm -rf "$RAG_TMP"
 
 # ---------------------------------------------------------------------------
 # Step 3. Optional Claude config copy.

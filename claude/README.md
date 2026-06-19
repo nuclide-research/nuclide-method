@@ -102,10 +102,11 @@ The chain in `PROTOCOL.md` names public tools where a public tool fills the role
 (nmap, httpx, nuclei, recongraph, aimap, aimap-profile, BARE). Where a stage was
 run by private tooling, the chain shows the documented stage role instead (for
 example "ACTIVE-BANNER", "LEDGER", "REPORT"), so the loop runs with any
-equivalent tool in that role. The stage roles map one-to-one to the eight-stage
-pipeline in [../docs/METHODOLOGY.md](../docs/METHODOLOGY.md). You can run the
-whole chain with public tooling plus whatever fills the ledger, scoring, and
-reporting roles in your own setup.
+equivalent tool in that role. The stage roles correspond to the eight-stage
+pipeline in [../docs/METHODOLOGY.md](../docs/METHODOLOGY.md); the checklist adds
+operational sub-steps with their own IDs. You can run the whole chain with public
+tooling plus whatever fills the ledger, scoring, and reporting roles in your own
+setup.
 
 ---
 

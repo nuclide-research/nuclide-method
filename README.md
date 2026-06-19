@@ -21,6 +21,28 @@ Built by **NuClide Research**, the lab behind advisories [CVE-2025-4364][cve] an
 
 ---
 
+<details>
+<summary>Table of contents</summary>
+
+- [What this is](#what-this-is)
+- [What's new](#whats-new)
+- [Features](#features)
+- [The thesis under test](#the-thesis-under-test)
+- [The pipeline](#the-pipeline)
+- [Quick start](#quick-start)
+- [Usage](#usage)
+- [Arsenal Matrix](#arsenal-matrix)
+- [Numbered insights](#numbered-insights)
+- [Restraint Ethic](#restraint-ethic)
+- [Coverage](#coverage)
+- [Citation](#citation)
+- [License and Disclaimer](#license-and-disclaimer)
+- [Acknowledgments](#acknowledgments)
+
+</details>
+
+---
+
 ## What this is
 
 The operating loop behind real published advisories, written down so you can run it yourself.
@@ -33,13 +55,13 @@ make install              # go install the public NuClide tools
 make chain IPS=ips.txt    # run the reference chain over your authorized scope
 ```
 
-The repo ships zero targets. You supply the scope. [QUICKSTART.md](docs/QUICKSTART.md) is the path from a clean machine to a verified finding.
+The repo ships zero targets. You supply the scope. [QUICKSTART.md](docs/QUICKSTART.md) is the path from a clean machine to a verified finding, and [a sample run over a documentation scope](examples/00-sample-run.txt) shows what the chain prints before you wire in your own targets.
 
 **The differentiator, and the whole point.** Every scanner points at cloud ranges, collects exposed AI services in an afternoon, and stops. That output is candidates. The stage that turns a candidate into a finding is verification, and it is the stage they skip. This repo is that stage, written down.
 
 ```
-NuClide Methodology - the 8-stage pipeline
-==========================================
+NuClide Methodology - eight numbered stages plus the active-banner prefilter
+============================================================================
 
 A scanner produces candidates. Verification produces findings.
 VERIFY is the load-bearing stage. The rest feed it or record what it confirmed.
@@ -60,6 +82,7 @@ VERIFY is the load-bearing stage. The rest feed it or record what it confirmed.
                      banner != schema           |
                      (prefilter only)           v
 
+                  Stage 2
                   +=================================+
                   ||                               ||
                   ||         [  VERIFY  ]          ||
@@ -114,6 +137,8 @@ Full diagram: [docs/diagrams/pipeline.txt](docs/diagrams/pipeline.txt).
 
 ## What's new
 
+[Full changelog](CHANGELOG.md).
+
 - **v2.5 makes the methodology the default operating logic**, not a mode you switch into. When the work is assessment, recon, or AI-infra investigation, the whole loop is already on. See [docs/METHODOLOGY.md](docs/METHODOLOGY.md).
 - **The tome corpus reaches 50 platforms.** One canonical record per platform carries dorks, probe scaffolds, and an OSINT profile, so you stop hand-deriving them per survey. See [docs/ARSENAL.md](docs/ARSENAL.md).
 - **The verification-rung grid is codified.** Every finding states a depth-by-breadth pair (Insight #68), so a code-reading move can never borrow the language of a population claim. See [docs/VERIFICATION.md](docs/VERIFICATION.md).
@@ -141,7 +166,7 @@ A methodology, not a tool. It exists to answer a falsifiable question.
 
 **The rightward shift.** The thesis strengthens across successor generations within a project family under disclosure pressure (Insight #40). When a disclosure lands, the next release hardens the specific surface that drove it. The architectural pattern persists. The observable finding shape closes.
 
-**Negatives confirm by contrapositive.** A platform that ships auth-on-default and runs zero unauthenticated hosts across thousands of instances is not a failed survey. It is evidence for the thesis, and it is publishable. Absence of a finding is not absence of risk.
+**Negatives confirm by contrapositive.** A platform that ships auth-on-default and runs zero unauthenticated hosts across a large population is not a failed survey. It is evidence for the thesis, and it is publishable. Absence of a finding is not absence of risk.
 
 Full hypothesis, predictions, and falsifiers: [docs/THESIS.md](docs/THESIS.md).
 
@@ -156,8 +181,8 @@ Eight numbered stages plus the Active-Banner prefilter. Discover, Active-Banner,
 | -1/0 | **Discover** | Name-first, provider, and CT-log discovery. Take the three-way delta, never one telescope. | [METHODOLOGY](docs/METHODOLOGY.md) |
 | 0c | **Active-Banner** | Liveness, fresh version, false-positive strip, shadow ports. Banner is not schema. | [VERIFICATION](docs/VERIFICATION.md) |
 | 1 | **Fingerprint** | One question: what service is on this port? Conjunctive match plus anti-match. | [DISCOVERY-MOVES](docs/DISCOVERY-MOVES.md) |
-| 3v | **Verify** | The load-bearing stage. A candidate becomes a finding only by surviving verification. | [VERIFICATION](docs/VERIFICATION.md) |
-| 3 | **Attribute** | No-SNI default cert to CT-log SAN pivot, plus rDNS. WHOIS is authoritative. | [OPERATOR-POSTURE](docs/OPERATOR-POSTURE.md) |
+| 2 | **Verify** | The load-bearing stage. A candidate becomes a finding only by surviving verification. | [VERIFICATION](docs/VERIFICATION.md) |
+| 3 | **Attribute** | No-SNI default cert to CT-log SAN pivot, plus rDNS. WHOIS is authoritative. | [METHODOLOGY](docs/METHODOLOGY.md) |
 | 4 | **Classify** | HIPAA, clinical, personal, research, or honeypot. Classify from schema, not contents. | [RESTRAINT-ETHIC](docs/RESTRAINT-ETHIC.md) |
 | 5 | **Ledger** | Append-only, lifecycle-tracked. Open to disclosed to acked to remediated to verified. | [OUTPUT-STANDARD](docs/OUTPUT-STANDARD.md) |
 | 6/7 | **Score / Codify** | OPA/Rego policy is the method. Then each survey becomes one numbered insight. | [SCORING](docs/SCORING.md) · [INSIGHTS](docs/INSIGHTS.md) |
@@ -215,9 +240,9 @@ tome dorks <platform>     # basic | strict | version tiers
 tome probe <platform>     # scaffold an aimap-compatible probe
 
 # scenario: arsenal-fanout for one host that looks deeper than the rest
-scanner -list one-host.txt -o banners.json          # active-banner prefilter
-aimap   -list one-host.txt -o aimap-report.json     # fingerprint plus deep enum
-herald  --list one-host.txt --json > herald.json    # auth-on-default posture
+scanner -ips-file one-host.txt -output banners.json     # active-banner prefilter
+aimap   -list one-host.txt -o aimap-report.json         # fingerprint plus deep enum
+herald  -platform <name> < ip-port.txt > herald.ndjson  # auth posture (targets: IP:PORT, stdin)
 # then VERIFY by hand: re-probe the candidate, confirm the data layer, earn the label
 
 # scenario: confirm the boundary controls before you commit anything
@@ -231,12 +256,12 @@ The reference runner ([chain/run-chain.sh](chain/run-chain.sh)) wires the public
 
 ## Arsenal Matrix
 
-One small, single-purpose tool per stage. Install only what the stage you are running needs. Every install command marked verified comes from an actual `go install ...@latest` run against a clean module cache, not an assumption. Source of truth: the [tome corpus][t-tome] (50 platforms) plus [docs/ARSENAL.md](docs/ARSENAL.md).
+One small, single-purpose tool per stage. Install only what the stage you are running needs. Install commands without a build-from-source footnote resolve a binary from the published tag against a clean module cache; the footnoted rows ([^src] / [^cargo] / [^py]) are the documented exceptions that build from source instead. Source of truth: the [tome corpus][t-tome] (50 platforms) plus [docs/ARSENAL.md](docs/ARSENAL.md).
 
 | Tool | Stage | Input | Output | Install |
 |------|-------|-------|--------|---------|
 | [aimap][t-aimap] | Fingerprint | IP and port | fingerprint plus deep-enum read | `go install github.com/nuclide-research/aimap@latest` |
-| [herald][t-herald] | Verify | `IP:PORT:SCHEME` list | NDJSON auth-state findings | `go install github.com/nuclide-research/herald@latest` |
+| [herald][t-herald] | Verify | `IP:PORT[:SCHEME]` on stdin, `-platform <name>` | NDJSON auth-state findings | `go install github.com/nuclide-research/herald@latest` |
 | [tiptoe][t-tiptoe] | Active-Banner | single monitored host | paced banner with block detection | `go install github.com/nuclide-research/tiptoe@latest` |
 | [JAXEN][t-jaxen] | Discover | Shodan dork, ASN, CIDR | per-host asset records, SQLite | `go install github.com/nuclide-research/JAXEN@latest` |
 | [VisorPlus][t-vplus] | Discover to Score | host or host list | chained passive recon plus enum | `go install github.com/nuclide-research/VisorPlus@latest` |
@@ -245,7 +270,7 @@ One small, single-purpose tool per stage. Install only what the stage you are ru
 | [VisorLog][t-vlog] | Ledger | confirmed finding | append-only lifecycle SQLite record | `go install github.com/nuclide-research/VisorLog@latest` |
 | [VisorScuba][t-vscuba] | Score | ledger of findings | 0-10 OPA compliance score | `go install github.com/nuclide-research/VisorScuba@latest` |
 | [VisorCorpus][t-vcorpus] | Score | LLM-adjacent target | adversarial prompt corpus | `go install github.com/nuclide-research/VisorCorpus/cmd/visorcorpus@latest` |
-| [VisorRAG][t-vrag] | Verify to Score | host plus prior findings | RAG-grounded recall, sandboxed probes | `go install github.com/nuclide-research/VisorRAG/cmd/visor@latest` *(target is `cmd/visor`)* |
+| [VisorRAG][t-vrag] | Verify to Score | host plus prior findings | RAG-grounded recall, sandboxed probes | `go install github.com/nuclide-research/VisorRAG/cmd/visor@latest` *(builds a `visor` binary; install as `visorrag` to avoid colliding with the umbrella tool)* |
 | [VisorGoose][t-vgoose] | Discover | government TLD pattern | gov-TLD AI-infra discovery | `go install github.com/nuclide-research/VisorGoose@latest` |
 | [visor][t-visor] | umbrella | tool family | stale-or-missing binary report | `go install github.com/nuclide-research/visor/cmd/visor@latest` |
 | [tome][t-tome] | Discover | platform name | dorks, probe configs, OSINT profile | `git clone ... && go build -o tome .` [^src] |
@@ -280,11 +305,13 @@ The durable IP of this program, the thing a single-tool README cannot show: an a
 
 | Insight | Lesson |
 |---------|--------|
-| #16 | A 200 is platform identity, not auth state. Auth posture lives in the body. |
-| #15 | Dork hits are not platform instances. Assume roughly half are false positives until proven (the ~50% rule). |
-| #13 | Shipping defaults are load-bearing. The default is the deployment template for the whole population. |
 | #1 | Protocol-strict surveys self-filter honeypots. The shape gate beats any IP blocklist. |
+| #13 | Shipping defaults are load-bearing. The default is the deployment template for the whole population. |
+| #15 | Dork hits are not platform instances. Assume roughly half are false positives until proven (the ~50% rule). |
+| #16 | A 200 is platform identity, not auth state. Auth posture lives in the body. |
 | #68 | State every finding as a depth-by-breadth pair. One axis never smuggles in a claim on the other. |
+
+The numbers are stable citation IDs. A given insight keeps its number across the series, so gaps in the sequence are expected, not missing entries.
 
 Full series, with the three-part shape and sanitized illustrations: [docs/INSIGHTS.md](docs/INSIGHTS.md). Contributions by pull request: add the next number, keep the shape, sanitize hard.
 
@@ -311,7 +338,7 @@ Where a benchmark README shows a solve-rate, we show the corpus and the verifica
 | Verified unauthenticated reads | `<verified-unauth-reads>` |
 | Numbered insights codified | `<numbered-insights>` |
 
-The corpus is canonical and versioned. Coverage without verification is not coverage. It is a candidate count. Worked examples that show the spine end to end live in [examples/](examples/README.md): an empty-API-secret confirmation, a population survey, a schema-only read, and an API-create class.
+The corpus is canonical and versioned. Coverage without verification is not coverage. It is a candidate count. Worked examples covering four corners of the spine live in [examples/](examples/README.md), each held at the verification tier it actually earned: an empty-API-secret confirmation read from source, a population survey that tests the auth-on-default thesis, a schema-only database read held at metadata, and an unauthenticated model-server class anchored to a published CVE.
 
 ---
 
@@ -351,7 +378,7 @@ MIT. See [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-Built on the public NuClide tools listed in the [Arsenal Matrix](#arsenal-matrix), and standing on the established work of [nmap](https://nmap.org), [naabu](https://github.com/projectdiscovery/naabu), [httpx](https://github.com/projectdiscovery/httpx), [nuclei](https://github.com/projectdiscovery/nuclei), and the [Censys](https://censys.io) and [Shodan](https://www.shodan.io) data platforms, which carry the discovery and banner layers the method depends on. README structure follows the convention set by community security-tooling templates: demo first, then features, quick start, coverage, citation, license, disclaimer.
+Built on the public NuClide tools listed in the [Arsenal Matrix](#arsenal-matrix), and standing on the established work of [nmap](https://nmap.org), [naabu](https://github.com/projectdiscovery/naabu), [httpx](https://github.com/projectdiscovery/httpx), [nuclei](https://github.com/projectdiscovery/nuclei), and the [Censys](https://censys.io) and [Shodan](https://www.shodan.io) data platforms, which carry the discovery and banner layers the method depends on. README structure follows the convention set by community security-tooling templates: what it is first, then features, quick start, coverage, citation, license, disclaimer.
 
 <div align="right">
 

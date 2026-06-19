@@ -186,6 +186,9 @@ comes easiest.
    (the candidate)   (what it is)   (is it real)   (what may I touch)
 ```
 
+The diagram shows the numbered stages only; the Active-Banner prefilter runs
+between Discover and Fingerprint (see [METHODOLOGY.md](METHODOLOGY.md)).
+
 A healthy survey reads, in order: discovery drive finds the candidate, systems
 lens identifies what it actually is, test-and-evaluation rigor decides whether the
 claim survives a real probe, and risk-and-ethics judgment governs what gets read

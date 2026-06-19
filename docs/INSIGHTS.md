@@ -4,7 +4,8 @@ The numbered insight series is the durable output of this research program. A
 scan produces data. An insight produces the methodology that makes the data
 trustworthy. We codify one per survey, and we cite them by number, because each
 one is a class of mistake we made or caught, generalized into a rule that catches
-it the next time.
+it the next time. The numbers are stable citation IDs: a given insight keeps its
+number for good, so gaps in the sequence are expected, not missing entries.
 
 The series grows one insight at a time. That is the discipline, not a slogan: a
 survey that produces a finding but no insight has under-delivered. Most of the

@@ -59,8 +59,9 @@ breadth (host vs population). Never use language above the rung you are on.
 - **Outer rung:** 0 (no live host), 1 (one in-scope host), or 2 (population,
   fingerprint + sampling + dedup).
 - **Tier marker:** Verified (probe ran, response established the claim) /
-  Inferred (the next chain step was not exercised, often by the restraint ethic)
-  / Hypothesized (surface only, no direct evidence).
+  Surface open, access not exercised (port or endpoint answered, the read was
+  blocked or deliberately not driven, often by the restraint ethic) /
+  Candidate (a scanner or dork flagged it, nothing confirmed).
 - **Exact remaining steps** to reach the next rung on each axis.
 
 Reaching outer-1 by exercising the request demonstrates inner-B for that host.

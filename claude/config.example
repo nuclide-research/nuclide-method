@@ -17,26 +17,25 @@
 #   export PATH="$PATH:${NUCLIDE_BIN}"
 
 # ---------------------------------------------------------------------------
-# Optional discovery-source credentials (placeholders, NOT real keys)
+# Discovery-source credentials (for YOUR tooling, not this runner)
 # ---------------------------------------------------------------------------
-# Some discovery steps can read from third-party sources if you supply your own
-# API access. These are optional. The chain runs without them; they only widen
-# the discovery delta. Set them in your local copy if you have your own account.
-#
-# Leave the values blank here. Fill them in your local, gitignored env file.
-#   export SHODAN_API_KEY=""     # your own Shodan key, if you use one
+# Discovery (Shodan, Censys, CT-log sweeps) runs in your own tooling and feeds
+# the runner a scope file. The reference runner reads none of these variables.
+# They are listed here only as the naming convention to keep across your setup.
+# Put real values in your local, gitignored env file, never here.
+#   export SHODAN_API_KEY=""     # your own Shodan key, used by your discovery step
 #   export CENSYS_API_ID=""      # your own Censys API id
 #   export CENSYS_API_SECRET=""  # your own Censys API secret
-#
-# A blank key means the step is skipped, not failed. That is intended.
 
 # ---------------------------------------------------------------------------
-# Footprint guard (opt-in)
+# Footprint guard (opt-in, fail-closed)
 # ---------------------------------------------------------------------------
-# Off by default. When set to 1, the chain runs in its quietest profile:
-# congestion-controlled probing, no loud sweeps, slower pace. Turn it on when
-# the target is monitored, fragile, or you simply want to minimize noise.
-#   export NUCLIDE_FOOTPRINT_GUARD=1
+# Off by default, and the runner makes no assumptions about your network. To opt
+# in, set FOOTPRINT_GUARD to a command that exits 0 when your egress posture is
+# what you expect (VPN up, jump host reachable, whatever your engagement
+# requires). The runner evaluates it before any active stage; a non-zero exit
+# aborts the run with exit code 2 before any outward probe. Unset disables it.
+#   export FOOTPRINT_GUARD='your-egress-check --quiet'
 
 # ---------------------------------------------------------------------------
 # Scope file (no default on purpose)

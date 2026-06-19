@@ -47,11 +47,19 @@ Output lands under `${NUCLIDE_OUT:-./nuclide-runs}/<slug>-<date>/`.
 Install the public tools the chain calls. Discovery is by PATH, or by an
 optional `NUCLIDE_BIN` directory you export.
 
-NuClide public tools:
+NuClide public tools. The verified, copy-pasteable install command for every
+tool the chain calls is in the install matrix at
+[`docs/ARSENAL.md`](../docs/ARSENAL.md), which is the source of truth: every
+`go install ...@latest` there was run against a clean module cache, and the
+tools that build from source carry the exact `git clone && go build` line. The
+fastest path is `./bootstrap.sh` from the repo root, which go-installs the
+installable subset for you.
 
 ```
-go install github.com/nuclide-research/aimap@latest
-# herald, tome, bare, tiptoe, scanner: see their own repos / release tarballs
+go install github.com/nuclide-research/aimap@latest    # Stage 1 fingerprint
+go install github.com/nuclide-research/herald@latest   # Stage 1b auth posture
+go install github.com/nuclide-research/tiptoe@latest   # Stage 0c banner (fallback)
+# scanner, tome, bare build from source: see docs/ARSENAL.md
 ```
 
 Established tools (any current install works):
@@ -74,7 +82,7 @@ the run continues. Nothing in the chain hard-fails on a missing optional tool.
 | Stage | Calls | Notes |
 |-------|-------|-------|
 | -1 / 0 Platform intel | `tome` | Dork and probe-scaffold source for covered platforms. Discovery itself is your own credentialed step. |
-| 0b Cross-population | documented gap | Census / CT-log delta. Supply your own sweep; append the delta to `ips.txt`. |
+| 0b Cross-population | documented gap | Censys / CT-log delta. Supply your own sweep; append the delta to `ips.txt`. |
 | 0c Active banner | `scanner`, fallback `tiptoe` | Liveness, fresh version, dork false-positive strip, shadow ports. A banner is not a schema. |
 | 1 Fingerprint | `aimap` | Core fingerprint and deep enum over the port set. |
 | 1b Auth posture | `herald` | Explicit auth-on-default probe per host or platform. |

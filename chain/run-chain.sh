@@ -88,6 +88,11 @@ awk -F: '{print $1}' "$IP_LIST" | sort -u > "$RUN_DIR/ips.txt"
 IP_COUNT="$(wc -l < "$RUN_DIR/ips.txt" | tr -d ' ')"
 echo "Scope: $IP_COUNT unique hosts -> $RUN_DIR/ips.txt"
 
+# Preserve any IP:PORT lines from the caller's scope for tools that need a port.
+# herald reads IP:PORT[:SCHEME] on stdin; bare-IP scope lines have no port to give
+# it, so they are left out of this file rather than fed to herald portless.
+grep -E ':[0-9]+' "$IP_LIST" | sort -u > "$RUN_DIR/ip-port.txt" || true
+
 # Default port set for the AI/ML fingerprint sweep. Override with AIMAP_PORTS.
 AIMAP_PORTS="${AIMAP_PORTS:-80,443,1984,2379,3000,3001,4000,4040,4200,5000,5001,5678,6333,7575,7576,7860,8000,8001,8080,8081,8123,8233,8265,8443,8501,8787,8888,8889,9000,9090,9091,10000,11434,15500,18080,18789,19530,30000,51000,55000}"
 
@@ -134,9 +139,9 @@ else
   gap "tome not installed (go install the public tool, then re-run)."
 fi
 
-# Census / CT-log cross-population delta. Private helper in the internal chain.
-stage "Stage 0b: Census / CT-log cross-population delta"
-gap "census/CT-log delta helper is not bundled. Supply your own sweep that \
+# Censys / CT-log cross-population delta. Private helper in the internal chain.
+stage "Stage 0b: Censys / CT-log cross-population delta"
+gap "Censys/CT-log delta helper is not bundled. Supply your own sweep that \
 reads ips.txt, adds CT-log-sourced hosts your Shodan crawl missed, and appends \
 the delta to $RUN_DIR/ips.txt. Set CENSYS_API_ID / CENSYS_API_SECRET in your \
 own tooling; this repo ships no keys."
@@ -151,12 +156,21 @@ stage "Stage 0c: Active banner grab (scanner / tiptoe)"
 # a schema; vector-use confirmation stays the fingerprinter's job (VERIFY).
 if have scanner; then
   echo "  Running scanner over the scope (banner layer)."
-  "$SCANNER_BIN" -list "$RUN_DIR/ips.txt" -o "$RUN_DIR/banners.json" 2>&1 | tail -5 || \
+  "$SCANNER_BIN" -ips-file "$RUN_DIR/ips.txt" -output "$RUN_DIR/banners.json" 2>&1 | tail -5 || \
     echo "  (scanner returned non-zero; banners may be partial, continuing)"
 elif have tiptoe; then
-  echo "  scanner not found; using tiptoe for a quiet banner pass."
-  "$TIPTOE_BIN" -list "$RUN_DIR/ips.txt" -o "$RUN_DIR/banners.json" 2>&1 | tail -5 || \
-    echo "  (tiptoe returned non-zero; continuing)"
+  # tiptoe is single-host by design (it assesses the one host that watches
+  # back), so loop the scope and aggregate one JSON object per host. scanner is
+  # the intended list-stage tool; tiptoe is the quiet single-host fallback.
+  echo "  scanner not found; using tiptoe for a quiet per-host banner pass."
+  : > "$RUN_DIR/banners.jsonl"
+  while read -r host; do
+    [ -z "$host" ] && continue
+    case "$host" in \#*) continue ;; esac
+    "$TIPTOE_BIN" assess "$host" --json >> "$RUN_DIR/banners.jsonl" 2>/dev/null || \
+      echo "  (tiptoe non-zero on $host; continuing)"
+  done < "$RUN_DIR/ips.txt"
+  echo "  -> $RUN_DIR/banners.jsonl (one JSON object per host)"
 else
   gap "no banner tool (scanner or tiptoe) found. Liveness and version data \
 will be missing; the fingerprint stage runs on raw candidates."
@@ -179,10 +193,22 @@ fi
 # Auth-probe enrichment. herald confirms auth posture per platform.
 stage "Stage 1b: Auth posture probe (herald)"
 if have herald; then
-  echo "  herald present. Probe auth posture per host/platform with:"
-  echo "    herald --list $RUN_DIR/ips.txt --json > $RUN_DIR/herald.json"
-  "$HERALD_BIN" --list "$RUN_DIR/ips.txt" --json > "$RUN_DIR/herald.json" 2>/dev/null || \
-    echo "  (herald returned non-zero or flags differ by version; see herald --help)"
+  # herald probes one platform at a time. It reads IP:PORT[:SCHEME] targets on
+  # stdin and emits NDJSON; -platform <name> is required, and there is no --json.
+  # Run `herald -list` to see the platform names it ships.
+  echo "  herald present. It probes one platform at a time, reading IP:PORT"
+  echo "  targets on stdin and emitting NDJSON:"
+  echo "    herald -platform <name> < ip-port.txt > $RUN_DIR/herald.ndjson"
+  if [ -n "${HERALD_PLATFORM:-}" ] && [ -s "$RUN_DIR/ip-port.txt" ]; then
+    "$HERALD_BIN" -platform "$HERALD_PLATFORM" < "$RUN_DIR/ip-port.txt" \
+      > "$RUN_DIR/herald.ndjson" 2>/dev/null || \
+      echo "  (herald non-zero; check 'herald -list' for platform names)"
+  elif [ -n "${HERALD_PLATFORM:-}" ]; then
+    echo "  (HERALD_PLATFORM set, but no IP:PORT targets in scope. herald needs a"
+    echo "   port; write scope lines as IP:PORT, then re-run.)"
+  else
+    echo "  (set HERALD_PLATFORM=<name> and use IP:PORT scope lines to run herald)"
+  fi
 else
   gap "herald not installed. Auth-on-default posture will be inferred from \
 aimap alone instead of an explicit auth probe."

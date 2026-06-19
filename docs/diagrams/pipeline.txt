@@ -1,5 +1,5 @@
-NuClide Methodology - the 8-stage pipeline
-==========================================
+NuClide Methodology - eight numbered stages plus the active-banner prefilter
+============================================================================
 
 A scanner produces candidates. Verification produces findings.
 VERIFY is the load-bearing stage; the rest feed it or record what it confirmed.
@@ -20,6 +20,7 @@ VERIFY is the load-bearing stage; the rest feed it or record what it confirmed.
                      banner != schema           |
                      (prefilter only)           v
 
+                  Stage 2
                   +=================================+
                   ||                               ||
                   ||         [  VERIFY  ]          ||
