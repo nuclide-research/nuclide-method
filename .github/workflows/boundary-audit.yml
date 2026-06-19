@@ -94,16 +94,18 @@ jobs:
       - name: No researcher PII
         shell: bash
         env:
-          # Generic PII signal. We match an @gmail address and a 'military'
+          # Generic PII signal. We match an @gmail address and a rank/service
           # keyword rather than hardcoding any real name into a public file.
+          # Kept identical to scripts/boundary-audit.sh so local and CI agree.
           # If a personal name pattern is ever needed, set PII_PATTERN as a
           # repo secret and extend the alternation below; do not commit it here.
-          PII_PATTERN: '@gmail|[Mm]ilitary service|enlisted'
+          PII_PATTERN: '@gmail|staff sergeant|enlisted'
         run: |
           set -uo pipefail
-          # Scan every tracked file except this workflow, which by design holds
-          # the detector pattern itself and would otherwise self-flag.
-          files="$(git ls-files | grep -v '^.github/workflows/boundary-audit.yml$' || true)"
+          # Scan every tracked file except the two boundary-audit sources, which
+          # by design hold the detector pattern itself and would self-flag. The
+          # CI workflow and its local mirror script both carry the alternation.
+          files="$(git ls-files | grep -vE '^(\.github/workflows/boundary-audit\.yml|scripts/boundary-audit\.sh)$' || true)"
           hits=""
           if [ -n "$files" ]; then
             hits="$(printf '%s\n' "$files" | xargs -d '\n' grep -rIlE "$PII_PATTERN" 2>/dev/null || true)"

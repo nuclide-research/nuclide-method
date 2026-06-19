@@ -94,8 +94,8 @@ precondition.
 package main
 
 import (
-	"fmt"
-	"strings"
+    "fmt"
+    "strings"
 )
 
 const apiKeyAuthorizationPrefix = "Api-Key"
@@ -105,30 +105,30 @@ func apiSecret() string { return "" }
 
 // allowed reproduces the middleware's accept/reject branch logic.
 func allowed(authHeader string) bool {
-	parts := strings.Split(authHeader, " ")
-	if len(parts) != 2 {
-		return false
-	}
-	prefix, tokenString := parts[0], parts[1]
-	if prefix != apiKeyAuthorizationPrefix {
-		return false
-	}
-	if tokenString != apiSecret() {
-		return false
-	}
-	return true
+    parts := strings.Split(authHeader, " ")
+    if len(parts) != 2 {
+        return false
+    }
+    prefix, tokenString := parts[0], parts[1]
+    if prefix != apiKeyAuthorizationPrefix {
+        return false
+    }
+    if tokenString != apiSecret() {
+        return false
+    }
+    return true
 }
 
 func main() {
-	cases := []string{
-		"Api-Key ", // trailing space: parts == ["Api-Key", ""], empty token
-		"Api-Key",  // no space: parts == ["Api-Key"], len 1
-		"Api-Key x",// non-empty token vs empty secret
-		"Bearer ",  // wrong prefix
-	}
-	for _, c := range cases {
-		fmt.Printf("%-12q -> allowed=%v\n", c, allowed(c))
-	}
+    cases := []string{
+        "Api-Key ", // trailing space: parts == ["Api-Key", ""], empty token
+        "Api-Key",  // no space: parts == ["Api-Key"], len 1
+        "Api-Key x",// non-empty token vs empty secret
+        "Bearer ",  // wrong prefix
+    }
+    for _, c := range cases {
+        fmt.Printf("%-12q -> allowed=%v\n", c, allowed(c))
+    }
 }
 ```
 
