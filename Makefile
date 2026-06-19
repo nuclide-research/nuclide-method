@@ -6,6 +6,7 @@
 # Public Go tools, installed via `go install`. Override on the command line if needed.
 TOOLS ?= \
 	github.com/nuclide-research/aimap@latest \
+	github.com/nuclide-research/herald@latest \
 	github.com/nuclide-research/JAXEN@latest \
 	github.com/nuclide-research/VisorPlus@latest \
 	github.com/nuclide-research/tiptoe@latest \

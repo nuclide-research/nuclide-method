@@ -62,7 +62,7 @@ Verify a couple of tools resolve:
 
 ```sh
 command -v aimap
-command -v tome
+command -v herald
 ```
 
 The install list in `bootstrap.sh` is a convenience, not the authority. Verify
@@ -135,8 +135,12 @@ a real outcome, written down, not a failed run.
 Start from the template. Do not freehand a finding.
 
 ```sh
+mkdir -p findings
 cp templates/FINDING-REPORT.md findings/001-my-finding.md
 ```
+
+The `findings/` directory is gitignored. A finding you write stays local until you
+have sanitized it to class level and chosen to contribute it.
 
 Fill in what the template asks: what the exposure is, why it matters, how it
 chains, the fix, and the references. Sanitize as you write. Swap any real

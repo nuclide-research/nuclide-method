@@ -31,11 +31,13 @@ set -eu
 # Override on the command line if you want a subset:
 #   TOOLS="github.com/nuclide-research/aimap@latest" ./bootstrap.sh
 # ---------------------------------------------------------------------------
+#
+# This set is the go-installable subset only. Source-build and non-Go tools
+# (tome, scanner, VisorSD, menlohunt, BARE, and the Python tools) are NOT here;
+# see docs/ARSENAL.md to build them.
 TOOLS="${TOOLS:-\
 github.com/nuclide-research/aimap@latest \
-github.com/nuclide-research/tome@latest \
 github.com/nuclide-research/herald@latest \
-github.com/nuclide-research/BARE@latest \
 github.com/nuclide-research/tiptoe@latest \
 github.com/nuclide-research/JAXEN@latest \
 github.com/nuclide-research/VisorPlus@latest \

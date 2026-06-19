@@ -99,3 +99,10 @@ shodan/**/scan_results.jsonl
 **/_gmail_drafts*
 **/*ready-to-send*
 disclosures/_gmail_drafts.json
+
+# --- User working files from the quickstart (scope lists, findings, run output) ---
+#     A scope list or a draft finding is local until sanitized and contributed.
+findings/
+nuclide-runs/
+*-runs/
+*scope*.txt

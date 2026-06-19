@@ -9,7 +9,7 @@ Built by **NuClide Research**, the lab behind advisories [CVE-2025-4364][cve] an
 
 [**nuclide-research.com**][site]
 
-[Methodology](docs/METHODOLOGY.md) · [Quick Start](#quick-start) · [Arsenal](#arsenal-matrix) · [Report a Finding](CONTRIBUTING.md)
+[Methodology](docs/METHODOLOGY.md) · [Quick Start](#quick-start) · [Arsenal](#arsenal-matrix) · [Report a Vulnerability](SECURITY.md) · [Contribute](CONTRIBUTING.md)
 
 [![License: MIT][badge-license]][url-license]
 [![Methodology v2.5][badge-version]][url-version]
@@ -36,8 +36,6 @@ make chain IPS=ips.txt    # run the reference chain over your authorized scope
 The repo ships zero targets. You supply the scope. [QUICKSTART.md](docs/QUICKSTART.md) is the path from a clean machine to a verified finding.
 
 **The differentiator, and the whole point.** Every scanner points at cloud ranges, collects exposed AI services in an afternoon, and stops. That output is candidates. The stage that turns a candidate into a finding is verification, and it is the stage they skip. This repo is that stage, written down.
-
-<!-- TODO: replace this static block with an asciinema cast of a reference chain run (motion over static). -->
 
 ```
 NuClide Methodology - the 8-stage pipeline
@@ -151,7 +149,7 @@ Full hypothesis, predictions, and falsifiers: [docs/THESIS.md](docs/THESIS.md).
 
 ## The pipeline
 
-Eight stages: Discover, Active-Banner, Fingerprint, **Verify**, Attribute, Classify, Ledger, then Score and Codify. Every stage writes to the ledger before the next begins, so a survey interrupted anywhere resumes from the record instead of rerunning from scratch.
+Eight numbered stages plus the Active-Banner prefilter. Discover, Active-Banner, Fingerprint, **Verify**, Attribute, Classify, Ledger, then Score and Codify. Every stage writes to the ledger before the next begins, so a survey interrupted anywhere resumes from the record instead of rerunning from scratch.
 
 | # | Stage | One line | Docs |
 |---|-------|----------|------|
@@ -164,7 +162,7 @@ Eight stages: Discover, Active-Banner, Fingerprint, **Verify**, Attribute, Class
 | 5 | **Ledger** | Append-only, lifecycle-tracked. Open to disclosed to acked to remediated to verified. | [OUTPUT-STANDARD](docs/OUTPUT-STANDARD.md) |
 | 6/7 | **Score / Codify** | OPA/Rego policy is the method. Then each survey becomes one numbered insight. | [SCORING](docs/SCORING.md) · [INSIGHTS](docs/INSIGHTS.md) |
 
-**The differentiator, in one number.** Of the 21-plus codified insights, roughly 18 are verification-stage failures. Skipped verification does not fail randomly. At population scale it fails systematically, producing confident, reproducible, wrong numbers. The pipeline puts its weight where the lies enter.
+**The differentiator.** Most of the codified insights are verification-stage failures. Skipped verification does not fail randomly. At population scale it fails systematically, producing confident, reproducible, wrong numbers. The pipeline puts its weight where the lies enter.
 
 ---
 

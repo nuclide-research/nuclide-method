@@ -57,7 +57,7 @@ not absent. Invert the discovery: harvest by substrate signature, not by brand.
 that superset, and let a structure-anchored fingerprint that probes `/api/*`
 classify down. In one agent-platform survey the brand dork surfaced a single host;
 a `uvicorn`-substrate harvest surfaced a tractable superset that classified down to
-nine real instances, every one critically unauthenticated. The fingerprint is
+a handful of real instances, every one critically unauthenticated. The fingerprint is
 reusable; the brand dork was not.
 
 ### Insight #69 - A curated scan's negative is not a host-level negative
@@ -72,7 +72,7 @@ host verdict. The product is unmapped on the ports checked, not absent.
 
 **Verification rule.** Run a full-range population read (CT-log and full-port
 passive sources) as a standing complement before any "clean host" claim. One edge
-host showed three open ports to the curated scan and eighteen services to the
+host showed a few open ports to the curated scan and a small cluster of services to the
 full-range read, including a Kubernetes console, a router service, and a fleet of
 sshd on five-digit ports. The value is the delta between telescopes, not the
 overlap.
@@ -93,8 +93,8 @@ specificity, structural shape, and an anchored keyword, all required together.
 **Verification rule.** Require, at minimum: a specific endpoint that the platform
 alone serves, a structured response (JSON parse plus a named field, or a specific
 HTML title format), and an anchored keyword conjoined with both. One bespoke probe
-that matched a single word produced six false positives and zero true positives
-across more than a thousand prefixes. Add fingerprints to a shared catalog with
+that matched a single word produced a few false positives and zero true positives
+across a large prefix sweep. Add fingerprints to a shared catalog with
 this discipline; do not write per-survey single-word probes.
 
 ### Insight #15 - Dork hits are not platform instances (the ~50% rule)
@@ -110,8 +110,8 @@ false-positive class as a naked body match.
 
 **Verification rule.** Define a mandatory identity marker (a unique endpoint, field,
 or error string), probe the full corpus rather than a sample (sample bias hides the
-rate because top-ranked hits skew clean), and quote both numbers. A five-thousand-host
-title sweep confirmed about half as real via marker probes. Assume at least a 25%
+rate because top-ranked hits skew clean), and quote both numbers. A large
+title sweep confirmed roughly half as real via marker probes. Assume a substantial
 false-positive rate on any new platform's dork until proven otherwise.
 
 ### Insight #16 - A 200 is platform identity, not auth state
@@ -148,7 +148,7 @@ anonymous-admin roles, open self-registration, and an empty `securitySchemes`.
 **Verification rule.** Capture the 302 path without following it, then re-request
 the redirect target with cookies cleared and look for authenticated-state-only
 tokens. If an authenticated-state token is present without credentials, the host is
-in an anonymous-admin state. In one orchestration survey, eight of thirty-six
+in an anonymous-admin state. In one orchestration survey, a meaningful minority of
 confirmed hosts were unauthenticated at the post-redirect path despite a `/` that
 looked login-gated.
 
@@ -169,7 +169,7 @@ If the writer never references it, the writer is not authoring it; look upstream
 the actual author, usually two or three referrers back. The same discipline applies
 to your own prior-session notes: re-run the actual probe before propagating a
 cross-session claim. One claim built on a post-mutation config inspection dissolved
-when the 888-line writer source had zero references to the field it was blamed for.
+when the writer source had zero references to the field it was blamed for.
 
 ### Insight #1 - Protocol-strict surveys self-filter honeypots
 
@@ -184,8 +184,8 @@ it is harder to fake exact protocol conformance.
 **Verification rule.** Score a hit only on full protocol-shape conformance: the
 exact required envelope, method name, headers, and version negotiation the real
 platform demands. Layer an IP-based honeypot list on top as a secondary net, not as
-the primary discriminator. The same population that polluted a permissive survey at
-over 90% dropped to roughly 1% under a strict handshake.
+the primary discriminator. The same population that dominated a permissive survey
+fell by orders of magnitude under a strict handshake.
 
 ---
 
@@ -202,8 +202,8 @@ one platform, not many.
 overlap is a coincidence until resolved to a primary record.
 
 **Verification rule.** Resolve any apparent shared-range overlap to PTR before
-believing it. A cross-platform overlap study across four observability platforms
-found zero genuine address-level overlaps across hundreds of hosts, which is itself
+believing it. A cross-platform overlap study across several observability platforms
+found zero genuine address-level overlaps across a large host set, which is itself
 a publishable load-bearing result, not a null.
 
 ### Insight #19 - SPA plus headless API is a high-severity exposure tell
@@ -220,8 +220,8 @@ visible state is professional; the actual posture is often unhardened.
 **Verification rule.** Identify the CDN by response headers, pull the largest JS
 bundle, grep for absolute `https?://api\.` URLs, resolve the extracted API host, and
 probe it directly. If it lands on a different network than the CDN edge, that
-resolved host is the soft target. The pattern held across three independent
-instances in one six-week window. Illustrative shape: a frontend on a CDN edge, a
+resolved host is the soft target. The pattern held across multiple independent
+instances in a single short window. Illustrative shape: a frontend on a CDN edge, a
 bundle calling `https://api.example.com`, resolving to 203.0.113.10, an unhardened
 backend with adjacent data ports open.
 
@@ -245,7 +245,7 @@ ships them all that way.
 **Verification rule.** On every confirmed-unauth host, sweep about fifteen adjacent
 high-signal ports (metrics exporters, queue UIs, mail catchers, NFS, data-tier
 ports) and fingerprint each service, since the port number alone is unreliable. In
-one observability sweep, 27% of unauthenticated hosts had a second unprotected
+one observability sweep, a sizable share of unauthenticated hosts had a second unprotected
 surface on the same IP, and a metrics endpoint disclosing the full internal service
 topology was the highest-information-density leak. A stacked host (platform-unauth
 plus metrics-unauth plus open file shares on one IP) is multiplicatively worse than
@@ -272,8 +272,8 @@ documentation alone is insufficient, because every downstream copy of the templa
 still carries the old default.
 
 **Verification rule.** Always sample at least one comparison platform from the same
-category. A platform shipping auth-off-by-default ran a quarter of its population
-unauthenticated; a comparable platform with no such toggle ran zero, and its
+category. A platform shipping auth-off-by-default ran a large share of its population
+unauthenticated; a comparable platform with no such toggle ran effectively none, and its
 population included sophisticated enterprise and government operators. The same
 operators, the same skill, opposite defaults, opposite outcomes. When an entire
 category shows the same failure pattern, audit the vendor's shipping default first.
@@ -295,9 +295,9 @@ disclosure works in that ecosystem.
 **Verification rule.** Survey the successor rather than assuming. One predecessor
 exposed pooled-account metrics on a public endpoint; the Go-rewrite successor moved
 the metrics behind auth, returned a bare health status, and gated the admin surface,
-and a sweep of thousands of successor hosts found zero of the predecessor's leak
+and a sweep of a large successor population found none of the predecessor's leak
 class. New finding shapes emerged as the old one closed (an open setup wizard at
-about 1%), which is the pattern, not an exception.
+a low single-digit rate), which is the pattern, not an exception.
 
 ---
 
