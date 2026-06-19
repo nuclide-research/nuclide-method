@@ -1,0 +1,50 @@
+# NuClide Method - example config / env block.
+#
+# Copy this to a local, gitignored file and source it before a session:
+#   cp claude/config.example my.env      # my.env is local, never committed
+#   . ./my.env
+#
+# Nothing here is a secret. The keys below are NAMES of env vars you may set,
+# not values. Put real values in your local copy only. Never commit a real key.
+
+# ---------------------------------------------------------------------------
+# Tool install location
+# ---------------------------------------------------------------------------
+# Where `go install` puts the binaries. Leave unset to use the Go default
+# (go env GOBIN, or go env GOPATH/bin). Set it only if you want a custom dir.
+# Whatever you pick, put it on PATH.
+#   export NUCLIDE_BIN="$(go env GOPATH)/bin"
+#   export PATH="$PATH:${NUCLIDE_BIN}"
+
+# ---------------------------------------------------------------------------
+# Optional discovery-source credentials (placeholders, NOT real keys)
+# ---------------------------------------------------------------------------
+# Some discovery steps can read from third-party sources if you supply your own
+# API access. These are optional. The chain runs without them; they only widen
+# the discovery delta. Set them in your local copy if you have your own account.
+#
+# Leave the values blank here. Fill them in your local, gitignored env file.
+#   export SHODAN_API_KEY=""     # your own Shodan key, if you use one
+#   export CENSYS_API_ID=""      # your own Censys API id
+#   export CENSYS_API_SECRET=""  # your own Censys API secret
+#
+# A blank key means the step is skipped, not failed. That is intended.
+
+# ---------------------------------------------------------------------------
+# Footprint guard (opt-in)
+# ---------------------------------------------------------------------------
+# Off by default. When set to 1, the chain runs in its quietest profile:
+# congestion-controlled probing, no loud sweeps, slower pace. Turn it on when
+# the target is monitored, fragile, or you simply want to minimize noise.
+#   export NUCLIDE_FOOTPRINT_GUARD=1
+
+# ---------------------------------------------------------------------------
+# Scope file (no default on purpose)
+# ---------------------------------------------------------------------------
+# The path to your authorized scope file: one host per line, every line a host
+# you have written permission to test. There is no default. You set this per
+# engagement. The file is local and gitignored. It is never committed.
+#   export NUCLIDE_SCOPE="my-scope.txt"
+#
+# Reminder: authorization is the gate. A host not in your scope file does not
+# get probed. See DISCLAIMER.md.
